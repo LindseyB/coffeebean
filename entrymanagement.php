@@ -32,7 +32,7 @@
 		{
 			// twitter login info
 			$username = 'lindseybieda';
-			$password = 'incu13bus';
+			$password = 'REDACTED';
 			$message  = 'Caffeine Powered Automaton:' . $title . ' http://rarlindseysmash.com/index.php?n=' . $id;
 			$url = 'http://twitter.com/statuses/update.xml';
 			
