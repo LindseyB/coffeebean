@@ -6,7 +6,9 @@
 	function add_entry($title, $topic, $entry)
 	{
 		dbConnect();
-
+		
+		
+		$entry = formatCode($entry);
 		$entry = str_replace("\\", "\\\\", $entry);
 		$quotes = array(";", '"', "'");
 		$escquotes = array("\;", "\"", "\'");
@@ -167,13 +169,26 @@
 
 	}
 	
-	//replace all newlines to br
+	// format all of the code 
+	function formatCode($string)
+	{
+		return preg_replace_callback('/\<code\>(.*?)\<\/code\>/is', 'fixCode', $string);
+		
+	}
+	
+	// helper function for the above
+	function fixCode($text)
+	{
+		return str_replace(array("\t", " "), array("&nbsp;&nbsp;", "&nbsp;"), $text[0]);
+	}
+	
+	// replace all newlines to br
 	function nl2br2($string) 
 	{
 		return str_replace(array("\r\n", "\r", "\n"), "<br />", $string);
 	}
 	
-	//replace all br with newlines
+	// replace all br with newlines
 	function br2nl2($string)
 	{
 		return str_replace(array("<br>","<br/>", "<br />"), "\r\n", $string);
