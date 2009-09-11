@@ -39,6 +39,8 @@
 		fwrite($handle, '</channel>
 
 		</rss>');
+		
+		fclose($handle);
 	}
 
 	function display_item($title, $id, $descrip)
