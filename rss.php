@@ -1,5 +1,5 @@
 <?php
-	header("Content-Type: application/xml; charset=ISO-8859-1"); 
+	//header("Content-Type: application/xml; charset=ISO-8859-1"); 
 	include_once 'common.php';
 	include_once 'db.php';	
 	
@@ -13,12 +13,12 @@
 		global $handle;
 
 		fwrite($handle, '<?xml version="1.0" encoding="ISO-8859-1" ?>
-		<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+		<rss version="2.0">
+		<link type="application/atom+xml" rel="self" href="http://rarlindseysmash.com/rss.xml"/>
 
 		<channel>
-  		<atom:link href="http://rarlindseysmash.com/coffeebean/rss.php" rel="self" type="application/rss+xml" />
   		<title>Caffeine Powered Automaton</title>
-  		<link>http://narayan.neopages.org/cpa/</link>
+  		<link>http://rarlindseysmash.com</link>
   		<description>Caffeine Powered Automation News Feed</description>');
 	
 		$sql = "SELECT `id` FROM `bean_entries` ORDER BY `bean_entries`.`id` DESC";
@@ -68,8 +68,9 @@
 			$sqle = "SELECT `entry` FROM `bean_entries` WHERE `id` = " . $id;
 			$qrye = mysql_query($sqle);
 			$entry = mysql_fetch_array($qrye);
-
-			$entry = htmlentities($entry);
+			
+			$entry = htmlentities($entry[0]);
+			$entry = str_replace('&nbsp;', '', $entry);  
 			//$entry = strip_tags($entry[0]);
 
 			/*if(strlen($entry) >= 300)
