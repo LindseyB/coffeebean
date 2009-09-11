@@ -1,16 +1,18 @@
 <?php
-	//header("Content-Type: application/xml; charset=ISO-8859-1"); 
+	//header("Content-Type: application/xml; charset=ISO-8859-1");
 	include_once 'common.php';
-	include_once 'db.php';	
-	
-	dbconnect();	
+	include_once 'db.php';
 
-	$handle = fopen("rss.xml", "w");
+	dbconnect();
+
+	$handle;
 
 	// builds the rss file with the 10 latest entries.
 	function build_rss()
 	{
 		global $handle;
+		
+		$handle = fopen("rss.xml", "w");
 
 		fwrite($handle, '<?xml version="1.0" encoding="ISO-8859-1" ?>
 		<rss version="2.0">
