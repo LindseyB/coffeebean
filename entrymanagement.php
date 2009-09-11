@@ -1,7 +1,8 @@
 <?php
 	
 	include_once 'db.php';
-	
+	include_once 'rss.php';
+
 	//add an entry
 	function add_entry($title, $topic, $entry)
 	{
@@ -32,6 +33,8 @@
 		}
 		else
 		{
+			build_rss();
+
 			// twitter login info
 			$username = 'lindseybieda';
 			$password = 'REDACTED';
@@ -91,6 +94,7 @@
 		}
 		else
 		{
+			build_rss();
 			echo 'Success: the entry has been edited.';
 		}	
 		
@@ -113,6 +117,7 @@
 		}
 		else
 		{
+			build_rss();
 			echo 'Success: the entry has been removed.';
 		}
 	}

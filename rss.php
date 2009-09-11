@@ -5,43 +5,53 @@
 	
 	dbconnect();	
 
-	echo'<?xml version="1.0" encoding="ISO-8859-1" ?>
-	<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	$handle = fopen("rss.xml", "w");
 
-	<channel>
-  	<atom:link href="http://rarlindseysmash.com/coffeebean/rss.php" rel="self" type="application/rss+xml" />
-  	<title>Caffeine Powered Automaton</title>
-  	<link>http://narayan.neopages.org/cpa/</link>
-  	<description>Caffeine Powered Automation News Feed</description>';
-	
-	$sql = "SELECT `id` FROM `bean_entries` ORDER BY `bean_entries`.`id` DESC";
-	$qry = mysql_query($sql);
-	// get 10 latest IDs and store them in an array
-	for($i=0; $i<10; $i++)
+	// builds the rss file with the 10 latest entries.
+	function build_rss()
 	{
-		$row = mysql_fetch_array($qry);
-		$id_arr[$i] = $row[0];
-	}
+		global $handle;
+
+		fwrite($handle, '<?xml version="1.0" encoding="ISO-8859-1" ?>
+		<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+
+		<channel>
+  		<atom:link href="http://rarlindseysmash.com/coffeebean/rss.php" rel="self" type="application/rss+xml" />
+  		<title>Caffeine Powered Automaton</title>
+  		<link>http://narayan.neopages.org/cpa/</link>
+  		<description>Caffeine Powered Automation News Feed</description>');
 	
-	foreach($id_arr as $id)
-	{
-		display_item(gettitle($id), $id, getentry($id));
+		$sql = "SELECT `id` FROM `bean_entries` ORDER BY `bean_entries`.`id` DESC";
+		$qry = mysql_query($sql);
+		// get 10 latest IDs and store them in an array
+		for($i=0; $i<10; $i++)
+		{
+			$row = mysql_fetch_array($qry);
+			$id_arr[$i] = $row[0];
+		}
+	
+		foreach($id_arr as $id)
+		{
+			display_item(gettitle($id), $id, getentry($id));
+		}
+
+
+		fwrite($handle, '</channel>
+
+		</rss>');
 	}
-
-
-	echo'</channel>
-
-	</rss>';
 
 	function display_item($title, $id, $descrip)
 	{
-		echo '<item>
+		global $handle;
+
+		fwrite($handle, '<item>
     		<title>' . $title . '</title>
   		<guid isPermaLink="true">http://rarlindseysmash.com/index.php?n=' . $id . '</guid>
   		<link>http://rarlindseysmash.com/index.php?n=' . $id . '</link>
     		<description>' . $descrip . '</description>
 		<pubDate>'.date("D, d M Y G:i:s T",$id).'</pubDate>
-  		</item>';
+  		</item>');
 	}
 
 	function gettitle($id)
@@ -59,12 +69,13 @@
 			$qrye = mysql_query($sqle);
 			$entry = mysql_fetch_array($qrye);
 
-			$entry = strip_tags($entry[0]);
+			$entry = htmlentities($entry);
+			//$entry = strip_tags($entry[0]);
 
-			if(strlen($entry) >= 300)
+			/*if(strlen($entry) >= 300)
 			{
 				$entry = substr($entry, 0, 300) . "...";
-			}
+			}*/
 
 			return $entry;
 	}
