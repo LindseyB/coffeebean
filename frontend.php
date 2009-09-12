@@ -1,5 +1,40 @@
 <?php
 
+	function display_new()
+	{
+			echo '
+			<form method="post" action="index.php?new=1&sub=1" name="new" />
+			title: <input type="text" name="title" value="" size="30"/><br/>
+			topic: <input type="text" name="topic" value="" size="30"/><br/>
+			<textarea name="entry" rows="15" cols="80"></textarea><br/>
+			<input type="submit" name="submit" value="Submit" />
+			<input type="reset" value="Reset" />
+			</form>
+			';
+	}
+	
+	function display_comment_form($n)
+	{
+			echo'
+			<form action="index.php?comment=1&csub=1&n='.$n.'" method="post">
+ 			<textarea name="comment" rows="8" cols="65"></textarea><br/>
+			<input type="submit" value="Submit" name="submit"/>
+			<input type="reset" value="Reset" />
+			</form>';
+	}
+	
+	function display_edit($n, $title, $entry)
+	{
+			echo '
+			<form method="post" action="index.php?edit=1&esub=1&n='.$n.'" name="edit" />
+			title: <input type="text" name="title" value="'.$title.'" size="30"/><br/>
+			<textarea name="entry" rows="15" cols="80">'.br2nl2($entry).'</textarea><br/>
+			<input type="submit" name="submit" value="Submit" />
+			<input type="reset" value="Reset" />
+			</form>
+			';
+	}
+
 	function display_comments($n)
 	{
 		$sql = "SELECT * FROM `bean_comments` WHERE `entryid` = " . $n;
@@ -119,5 +154,5 @@
 			<br style="clear: right;"/>
 			';
 		}		
-	}	
+	}
 ?>

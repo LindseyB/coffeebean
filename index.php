@@ -27,19 +27,9 @@
 		{
 			add_entry($_POST['title'], $_POST['topic'], $_POST['entry']);
 		}
-		
 		else
 		{
-			
-			echo '
-				<form method="post" action="index.php?new=1&sub=1" name="new" />
-				title: <input type="text" name="title" value="" size="30"/><br/>
-				topic: <input type="text" name="topic" value="" size="30"/><br/>
-				<textarea name="entry" rows="15" cols="80"></textarea><br/>
-				<input type="submit" name="submit" value="Submit" />
-				<input type="reset" value="Reset" />
-				</form>
-				';
+			display_new();
 		}
 	}
 	
@@ -49,12 +39,7 @@
 		//show comment form
 		if(isset($_GET['cpage']))
 		{
-			echo'<form action="index.php?comment=1&csub=1&n='.$_GET['n'].'" method="post">
- 			<textarea name="comment" rows="8" cols="65"></textarea><br/>
-			 <input type="submit" value="Submit" name="submit"/>
-			 <input type="reset" value="Reset" />
-			</form>';
-			
+			display_comment_form($_GET['n']);
 		}
 		elseif(isset($_GET['csub']))
 		{	
@@ -86,17 +71,10 @@
 			$sqle = "SELECT `entry` FROM `bean_entries` WHERE `id` = " . $_GET['n'];
 			$qrye = mysql_query($sqle);
 			$entry = mysql_fetch_array($qrye);
-   
-			echo '
-			<form method="post" action="index.php?edit=1&esub=1&n='.$_GET['n'].'" name="edit" />
-			title: <input type="text" name="title" value="'.$title[0].'" size="30"/><br/>
-			<textarea name="entry" rows="15" cols="80">'.br2nl2($entry[0]).'</textarea><br/>
-			<input type="submit" name="submit" value="Submit" />
-			<input type="reset" value="Reset" />
-			</form>
-			';	
+   			
+   			display_edit($_GET['n'], $title[0], $entry[0]);
 			
-			display_comments($_GET['n']);	
+			display_comments($_GET['n']);
 		}
 		
 		elseif(isset($_GET['esub']))
@@ -129,11 +107,6 @@
 	{
 		show_entries();
 	}
-	
-
-	
-
-	
 
 ?>
 		</p>
