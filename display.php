@@ -32,7 +32,14 @@
 		$limit = 5;
 		$max = ceil(count($arr)/$limit);
 		
-		$p = $_GET['p'];
+		if(isset($_GET['p']))
+		{
+			$p = $_GET['p'];
+		}
+		else
+		{
+			$p = 1;
+		}
    
 		if($p<=0)
 		{
@@ -140,6 +147,8 @@
 		$sql = "SELECT `id` FROM `bean_comments` WHERE `entryid` = " . $id;
 		$qry = mysql_query($sql);
 		$i = 0;
+
+		$carr = array();
 
 		// get all IDs and store them in an array
 		while($row = mysql_fetch_array($qry))
