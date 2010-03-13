@@ -9,7 +9,6 @@
 	{
 		dbConnect();
 		
-		
 		$entry = formatCode($entry);
 		$entry = str_replace("\\", "\\\\", $entry);
 		$quotes = array(";", '"', "'");
@@ -21,6 +20,7 @@
 		$entry = str_replace($quotes, $escquotes, $entry);
 		$entry = trim(html_entity_decode($entry));
 		$entry = nl2br2($entry);
+		//$entry = formatCode($entry);
 		$id =  time();
 		
 		$sql = "INSERT INTO `bean_entries` (id, title, topic, entry) 
@@ -37,8 +37,9 @@
 			build_rss();
 
 			// twitter login info
+			/*
 			$username = 'lindseybieda';
-			$password = 'REDACTED';
+			$password = '';
 			$message  = 'Caffeine Powered Automaton:' . $title . ' http://rarlindseysmash.com/index.php?n=' . $id;
 			$url = 'http://twitter.com/statuses/update.xml';
 			
@@ -62,7 +63,7 @@
 			if ($buffer) 
 			{
 				echo 'Success: twitter message posted.';
-			} 
+			} */
 			
 			echo '<br/>Success: new entry added.';
 		}		
@@ -77,6 +78,7 @@
 		$title = str_replace($quotes, $escquotes, $title);
 		$title = trim(html_entity_decode($title));
 		
+		$entry = formatCode($entry);	
 		$entry = str_replace("\\", "\\\\", $entry);
 		$quotes = array(";", '"', "'");
 		$escquotes = array("\;", "\"", "\'");
@@ -178,7 +180,7 @@
 	// format all of the code 
 	function formatCode($string)
 	{
-		return preg_replace_callback('/\<code lang="(.*?)"\>(.*?)\<\/code\>/is', 'fixCode', $line);
+		return preg_replace_callback('/<code lang="(.*?)">(.*?)\<\/code>/is', 'getRendered', $string);
 		
 	}
 	
@@ -200,14 +202,26 @@
 							break;
 		}
 
-		return RenderToString($matches[2], $lang_id);
-		//return str_replace(array("\t", " "), array("&nbsp;&nbsp;", "&nbsp;"), $text[0]);
+		return '<code>'. RenderToString($matches[2], $lang_id) . '</code>';
 	}
 	
 	// replace all newlines to br
 	function nl2br2($string) 
 	{
-		return str_replace(array("\r\n", "\r", "\n"), "<br />", $string);
+		$pos = strrpos($string, "</code>");
+		
+		if($pos === FALSE){
+			$pos = 0;
+		}
+		
+		$replaced = str_replace(array("\r\n", "\r", "\n"), "<br />", substr($string,$pos));
+		return preg_replace_callback('/(.*?)(?:<code [^>]*>.*?\<\/code>)/is', 'convertBr', substr($string,0,$pos)) . $replaced;
+	}
+
+	function convertBr($matches)
+	{
+		print_r($matches);
+		return str_replace(array("\r\n", "\r", "\n"), "<br />", $matches[1]);	
 	}
 	
 	// replace all br with newlines
