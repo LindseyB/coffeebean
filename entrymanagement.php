@@ -2,6 +2,7 @@
 	
 	include_once 'db.php';
 	include_once 'rss.php';
+	include_once 'renderer.php';
 
 	//add an entry
 	function add_entry($title, $topic, $entry)
@@ -177,14 +178,30 @@
 	// format all of the code 
 	function formatCode($string)
 	{
-		return preg_replace_callback('/\<code\>(.*?)\<\/code\>/is', 'fixCode', $string);
+		return preg_replace_callback('/\<code lang="(.*?)"\>(.*?)\<\/code\>/is', 'fixCode', $line);
 		
 	}
 	
 	// helper function for the above
-	function fixCode($text)
+	function getRendered($matches)
 	{
-		return str_replace(array("\t", " "), array("&nbsp;&nbsp;", "&nbsp;"), $text[0]);
+		$type = strtolower($matches[1]);
+		
+		switch($type){
+			case 'basic':	$lang_id = 1;
+							break;
+			case 'java':	$lang_id = 2;
+							break;
+			case 'html':	$lang_id = 3;
+							break;
+			case 'php':		$lang_id = 4;
+							break;
+			default:		$lang_id = 0;
+							break;
+		}
+
+		return RenderToString($matches[2], $lang_id);
+		//return str_replace(array("\t", " "), array("&nbsp;&nbsp;", "&nbsp;"), $text[0]);
 	}
 	
 	// replace all newlines to br
