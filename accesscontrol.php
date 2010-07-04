@@ -127,63 +127,22 @@ if(!isset($uid)) {
 		background-color: #51a8f9;
 	}
 
-	/********* Rounded box CSS ****************/
-	.roundedcornr_box
+	.content
 	{
-		background: url(roundedcornr_tl.png) no-repeat top left;
-		max-width: 1024px;
-		max-height: 600px;
+		-moz-border-radius: 1em;
+		-webkit-border-radius: 1em;
+		border: solid 1px #cccccc;
+		background-color: #C6E2FF;
+		padding: 1em;
 		margin: auto;
-		overflow: hidden;
+		width: 80%;
 	}
-
-	.roundedcornr_top
-	{
-		background: url(roundedcornr_tr.png) no-repeat top right;
-		overflow: hidden;
-	}
-
-	.roundedcornr_bottom
-	{
-		background: url(roundedcornr_bl.png) no-repeat bottom left;
-		overflow: hidden;
-	}
-
-	.roundedcornr_bottom div
-	{
-		background: url(roundedcornr_br.png) no-repeat bottom right;
-		overflow: hidden;
-	}
-
-	.roundedcornr_content
-	{
-		background: url(roundedcornr_r.png) top right repeat-y;
-		overflow: hidden;
-	}
-
-	.roundedcornr_top div,.roundedcornr_top,
-	.roundedcornr_bottom div, .roundedcornr_bottom
-	{
-		width: 100%;
-		height: 15px;
-		font-size: 1px;
-		overflow: hidden;
-	}
-
-	.roundedcornr_content, .roundedcornr_bottom
-	{
-		margin-top: -19px;
-	}
-
-	.roundedcornr_content { padding: 0 15px; }
   </style>
     
 	</style>
   </head>
   <body>
- <div class="roundedcornr_box">
-   <div class="roundedcornr_top"><div></div></div>
-	  <div class="roundedcornr_content">
+	  <div class="content">
 	  	<p>
 			<h1>CoffeeBean: Login</h1>
 			  <form method="post" action="index.php" name="login">
@@ -193,16 +152,13 @@ if(!isset($uid)) {
 			    <input type="reset" value="Reset">
 			  </form>
  		</p>
-	  </div>
-   <div class="roundedcornr_bottom"><div></div></div>
-</div>
+	</div>
 </body>
 </html>
   <?php
   exit;
 }
 
-$_SESSION['uid'] = $uid;
 $_SESSION['uid'] = $uid;
 $_SESSION['pwd'] = $pwd;
 
@@ -211,7 +167,7 @@ $passsalt = md5(md5($pass).$uid);
 
 dbConnect();
 $sql = "SELECT * FROM bean_login WHERE
-        username = '$uid' AND password = '$passsalt' ";
+        username = '".mysql_real_escape_string($uid)."' AND password = '$passsalt' ";
 $result = mysql_query($sql);
 if (!$result) {
   error('A database error occurred while checking your '.

@@ -9,7 +9,6 @@
 	{
 		dbConnect();
 		
-		$entry = formatCode($entry);
 		$entry = str_replace("\\", "\\\\", $entry);
 		$quotes = array(";", '"', "'");
 		$escquotes = array("\;", "\"", "\'");
@@ -19,12 +18,10 @@
 		
 		$entry = str_replace($quotes, $escquotes, $entry);
 		$entry = trim(html_entity_decode($entry));
-		$entry = nl2br2($entry);
-		//$entry = formatCode($entry);
 		$id =  time();
 		
 		$sql = "INSERT INTO `bean_entries` (id, title, topic, entry) 
-		VALUES ($id, '$title', '$topic', '$entry');";
+		VALUES ($id, '".mysql_real_escape_string($title)."', '".mysql_real_escape_string($topic)."', '".mysql_real_escape_string($entry)."');";
 		$result = mysql_query($sql);
 		
 		if (!$result) 
@@ -78,16 +75,13 @@
 		$title = str_replace($quotes, $escquotes, $title);
 		$title = trim(html_entity_decode($title));
 		
-		$entry = formatCode($entry);	
 		$entry = str_replace("\\", "\\\\", $entry);
 		$quotes = array(";", '"', "'");
 		$escquotes = array("\;", "\"", "\'");
 		$entry = trim(html_entity_decode($entry));
 		$entry = str_replace($quotes, $escquotes, $entry);
-		
-		$entry_fix = nl2br2($entry);
 				
-		$sql = "UPDATE `bean_entries` SET title = '$title', entry = '$entry_fix' WHERE id = $id;";
+		$sql = "UPDATE `bean_entries` SET title = '".mysql_real_escape_string($title)."', entry = '".mysql_real_escape_string($entry)."' WHERE id = $id;";
 		$result = mysql_query($sql);
 		
 		if (!$result) 
@@ -163,7 +157,7 @@
 			dbConnect();
 			
 			$sql = "INSERT INTO `bean_comments` (entryid, id, poster, email, comment) 
-			VALUES ($entryid, $id, '$poster', '$email', '$comment');";
+			VALUES ($entryid, $id, '$poster', '$email', '".mysql_real_escape_string($comment)."');";
 			$result = mysql_query($sql);
 			
 		if (!$result) 
@@ -175,59 +169,6 @@
 			echo 'Success: the comment has been added.';
 		}		
 
-	}
-	
-	// format all of the code 
-	function formatCode($string)
-	{
-		return preg_replace_callback('/<code lang="(.*?)">(.*?)\<\/code>/is', 'getRendered', $string);
-		
-	}
-	
-	// helper function for the above
-	function getRendered($matches)
-	{
-		$type = strtolower($matches[1]);
-		
-		switch($type){
-			case 'basic':	$lang_id = 1;
-							break;
-			case 'java':	$lang_id = 2;
-							break;
-			case 'html':	$lang_id = 3;
-							break;
-			case 'php':		$lang_id = 4;
-							break;
-			default:		$lang_id = 0;
-							break;
-		}
-
-		return '<code>'. RenderToString($matches[2], $lang_id) . '</code>';
-	}
-	
-	// replace all newlines to br
-	function nl2br2($string) 
-	{
-		$pos = strrpos($string, "</code>");
-		
-		if($pos === FALSE){
-			$pos = 0;
-		}
-		
-		$replaced = str_replace(array("\r\n", "\r", "\n"), "<br />", substr($string,$pos));
-		return preg_replace_callback('/(.*?)(?:<code [^>]*>.*?\<\/code>)/is', 'convertBr', substr($string,0,$pos)) . $replaced;
-	}
-
-	function convertBr($matches)
-	{
-		print_r($matches);
-		return str_replace(array("\r\n", "\r", "\n"), "<br />", $matches[1]);	
-	}
-	
-	// replace all br with newlines
-	function br2nl2($string)
-	{
-		return str_replace(array("<br>","<br/>", "<br />"), "\r\n", $string);
 	}
 	
 ?>

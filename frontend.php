@@ -28,7 +28,7 @@
 			echo '
 			<form method="post" action="index.php?edit=1&esub=1&n='.$n.'" name="edit" />
 			title: <input type="text" name="title" value="'.$title.'" size="30"/><br/>
-			<textarea name="entry" rows="15" cols="80">'.br2nl2($entry).'</textarea><br/>
+			<textarea name="entry" rows="15" cols="80">'.$entry.'</textarea><br/>
 			<input type="submit" name="submit" value="Submit" />
 			<input type="reset" value="Reset" />
 			</form>
