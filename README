@@ -1,4 +1,7 @@
-		 __  __         _                   
+         __  __         _                   
  __ ___ / _|/ _|___ ___| |__  ___ __ _ _ _  
 / _/ _ \  _|  _/ -_) -_) '_ \/ -_) _` | ' \ 
 \__\___/_| |_| \___\___|_.__/\___\__,_|_||_|
+
+
+A simple crappy PHP based CMS that should probably be rewritten to use ruby on rails. 
