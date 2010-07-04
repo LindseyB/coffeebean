@@ -71,18 +71,18 @@
 			$prev = $p-1;
 			$next = $p+1;
    
-			echo '	<div class="paginate">';
-			
-			if($p < $max)
-			{
-					echo '<a href="index.php?p=' . $next . '">Next »</a>';	
-			}
+			echo '	<div class="pagination">';
 			if($p > 1)
 			{ 
 				echo '<a href="index.php?p=' . $prev . '">« Prev</a>';
 			}
-
-			echo '</div><br style="clear: right;"/>';
+			
+			if($p < $max)
+			{
+					echo ' <a href="index.php?p=' . $next . '">Next »</a>';	
+			}
+			
+			echo '</div>';
 		}
    
 	}
