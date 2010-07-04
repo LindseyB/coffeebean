@@ -17,7 +17,7 @@
 		$title = trim(html_entity_decode($title));
 		
 		$entry = str_replace($quotes, $escquotes, $entry);
-		$entry = trim(htmlentities($entry));
+		$entry = trim($entry);
 		$id =  time();
 		
 		$sql = "INSERT INTO `bean_entries` (id, title, topic, entry) 
@@ -78,7 +78,7 @@
 		$entry = str_replace("\\", "\\\\", $entry);
 		$quotes = array(";", '"', "'");
 		$escquotes = array("\;", "\"", "\'");
-		$entry = trim(htmlentities($entry));
+		$entry = trim($entry);
 		$entry = str_replace($quotes, $escquotes, $entry);
 				
 		$sql = "UPDATE `bean_entries` SET title = '".mysql_real_escape_string($title)."', entry = '".mysql_real_escape_string($entry)."' WHERE id = $id;";
@@ -147,7 +147,7 @@
 			$comment = str_replace("\\", "\\\\", $comment);
 			$quotes = array(";", '"', "'");
 			$escquotes = array("\;", "\"", "\'");
-			$comment = trim(htmlentities($comment));
+			$comment = trim($comment);
 			$comment = str_replace($quotes, $escquotes, $comment);
 		
 			$entry_fix = nl2br2($comment);
