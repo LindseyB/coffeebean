@@ -121,7 +121,7 @@
 			$qrye = mysql_query($sqle);
 			$entry = mysql_fetch_array($qrye);
 
-			return $entry[0];
+			return nl2br2(stripslashes($entry[0]));
 	}
 	
 	function getCommentNum($id)
