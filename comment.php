@@ -58,7 +58,6 @@
 				if(!isset($errorflag))
 				{	
 					$comment = htmlspecialchars($comment);
-					$comment_fix = nl2br2($comment);
 
 					//de-spamify e-mail addresses   				
 					$chars = array("@", ".");
@@ -69,7 +68,7 @@
 					$entryid = $_GET['n'];
    
 					$sql = "INSERT INTO `bean_comments` (entryid, id, poster, email, comment) 
-					VALUES ($entryid, $id, '$poster', '$email', '$comment_fix');";
+					VALUES ($entryid, $id, '".mysql_real_escape_string($poster)."', '".mysql_real_escape_string($email)."', '".mysql_real_escape_string($comment)."');";
 					$result = mysql_query($sql);
 				}
 			}
@@ -77,7 +76,7 @@
 		
 		//show all comments so far
 		
-		$sql = "SELECT `id` FROM `bean_comments` WHERE `entryid` = " . $_GET['n'] . " ORDER BY `id` ASC";
+		$sql = "SELECT `id` FROM `bean_comments` WHERE `entryid` = " . mysql_real_escape_string($_GET['n']) . " ORDER BY `id` ASC";
 
 		$qry = mysql_query($sql);
 		$i = 0;
@@ -143,11 +142,6 @@
 <?php
 		}
 
-	function nl2br2($string) 
-	{
-		$string = str_replace(array("\r\n", "\r", "\n"), "<br/>", $string);
-		return $string;
-	}
 	
 	function displaycomment($id)
 	{
@@ -164,31 +158,21 @@
 	
 	function getName($id)
 	{
-			$sql = "SELECT `poster` FROM `bean_comments` WHERE `id` = " . $id; //. "AND `entryid` = " . $_GET['n'];
+			$sql = "SELECT `poster` FROM `bean_comments` WHERE `id` = " . mysql_real_escape_string($id);
 			$qry = mysql_query($sql);
 			$name = mysql_fetch_array($qry);
 
 			return $name[0];
 	}
 	
-	//used to display email addresses 
-	/*
-	function getEmail($id)
-	{
-			$sql = "SELECT `email` FROM `bean_comments` WHERE `id` = " . $id; //. "AND `entryid` = " . $_GET['n'];
-			$qry = mysql_query($sql);
-			$email = mysql_fetch_array($qry);
-
-			return $email[0];	
-	}*/
 	
 	function getComment($id)
 	{
-			$sql = "SELECT `comment` FROM `bean_comments` WHERE `id` = " . $id; //. "AND `entryid` = " . $_GET['n'];
+			$sql = "SELECT `comment` FROM `bean_comments` WHERE `id` = " . mysql_real_escape_string($id);
 			$qry = mysql_query($sql);
 			$comment = mysql_fetch_array($qry);
 
-			return $comment[0];	
+			return nl2br2($comment[0]);	
 	}
 
 ?>

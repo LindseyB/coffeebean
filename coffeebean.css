@@ -1,0 +1,125 @@
+body
+{
+	font-family: "Calibri", Helvetica, Geneva, Tahoma, Verdana, sans-serif;
+}
+
+img
+{
+	vertical-align: bottom;
+	border: 0;
+}
+
+/* pagination */
+.paginate
+{
+	width: 15%;
+	margin: auto;
+}
+
+.paginate a
+{
+	display: block;
+	border: solid 1px  #818181;
+	margin: 5px;
+	padding: 5px;
+	height: 15px;
+	line-height: 15px;
+	width: 50px;
+	text-align: center;
+	float: right;
+	background-color: #fff;
+}
+
+/* pagination */
+.paginate a:hover
+{
+	background-color: #e2e2e2;
+}
+
+
+/* link color */
+a:link {color: #ad45cf; text-decoration: none; font-weight: bold; font-size: 14px;}
+a:visited {color: #ad45cf; text-decoration: none; font-weight: bold;font-size: 14px;}
+a:hover {color: #51a8f9}
+
+a.header {color: black;}
+
+/********* Form CSS ***********************/
+form
+{
+	padding: 5px;
+	margin: 5px;
+	font-family: "Calibri", Helvetica, Geneva, Tahoma, Verdana, sans-serif;
+	margin: auto;
+}
+
+input
+{
+	font-family: "Calibri", Helvetica, Geneva, Tahoma, Verdana, sans-serif;
+	margin: 5px;
+	padding: 5px;
+}
+
+textarea
+{
+	font-family: "Calibri", Helvetica, Geneva, Tahoma, Verdana, sans-serif;
+}
+
+/********* Table CSS **********************/
+table
+{
+	width: 75%;
+	border-collapse: collapse;
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 5px;
+	background-color: white;
+}
+
+tr, td, th
+{
+	border: solid 1px #51a8f9;
+	padding: 5px;
+}
+
+tr.altbg
+{
+	background-color: #f8e1ff; 
+}
+
+th.date
+{
+	width: 100px;
+}
+
+td.date
+{
+	text-align: center;
+}
+
+th.action
+{
+	width: 50px;
+}
+
+td.action
+{
+	text-align: center;
+}
+
+th
+{
+	color: white;
+	background-color: #51a8f9;
+}
+
+.content
+{
+	-moz-border-radius: 1em;
+	-webkit-border-radius: 1em;
+	border: solid 1px #cccccc;
+	background-color: #C6E2FF;
+	padding: 1em;
+	margin: auto;
+	width: 80%;
+}

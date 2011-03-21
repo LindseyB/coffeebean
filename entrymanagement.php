@@ -9,7 +9,6 @@
 	{
 		dbConnect();
 		
-		$entry = formatCode($entry);
 		$entry = str_replace("\\", "\\\\", $entry);
 		$quotes = array(";", '"', "'");
 		$escquotes = array("\;", "\"", "\'");
@@ -18,13 +17,11 @@
 		$title = trim(html_entity_decode($title));
 		
 		$entry = str_replace($quotes, $escquotes, $entry);
-		$entry = trim(html_entity_decode($entry));
-		$entry = nl2br2($entry);
-		//$entry = formatCode($entry);
+		$entry = trim($entry);
 		$id =  time();
 		
 		$sql = "INSERT INTO `bean_entries` (id, title, topic, entry) 
-		VALUES ($id, '$title', '$topic', '$entry');";
+		VALUES ($id, '".mysql_real_escape_string($title)."', '".mysql_real_escape_string($topic)."', '".mysql_real_escape_string($entry)."');";
 		$result = mysql_query($sql);
 		
 		if (!$result) 
@@ -35,36 +32,6 @@
 		else
 		{
 			build_rss();
-
-			// twitter login info
-			/*
-			$username = 'lindseybieda';
-			$password = '';
-			$message  = 'Caffeine Powered Automaton:' . $title . ' http://rarlindseysmash.com/index.php?n=' . $id;
-			$url = 'http://twitter.com/statuses/update.xml';
-			
-			// setup and execute the curl process
-			$curl_handle = curl_init();
-			curl_setopt($curl_handle, CURLOPT_URL, "$url");
-			curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
-			curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($curl_handle, CURLOPT_POST, 1);
-			curl_setopt($curl_handle, CURLOPT_POSTFIELDS, "status=$message");
-			curl_setopt($curl_handle, CURLOPT_USERPWD, "$username:$password");
-			$buffer = curl_exec($curl_handle);
-
-			if(curl_error($curl_handle))
-			{
-				echo curl_error($curl_handle);
-			}
-
-			curl_close($curl_handle);
-			
-			if ($buffer) 
-			{
-				echo 'Success: twitter message posted.';
-			} */
-			
 			echo '<br/>Success: new entry added.';
 		}		
 		
@@ -78,16 +45,13 @@
 		$title = str_replace($quotes, $escquotes, $title);
 		$title = trim(html_entity_decode($title));
 		
-		$entry = formatCode($entry);	
 		$entry = str_replace("\\", "\\\\", $entry);
 		$quotes = array(";", '"', "'");
 		$escquotes = array("\;", "\"", "\'");
-		$entry = trim(html_entity_decode($entry));
+		$entry = trim($entry);
 		$entry = str_replace($quotes, $escquotes, $entry);
-		
-		$entry_fix = nl2br2($entry);
 				
-		$sql = "UPDATE `bean_entries` SET title = '$title', entry = '$entry_fix' WHERE id = $id;";
+		$sql = "UPDATE `bean_entries` SET title = '".mysql_real_escape_string($title)."', entry = '".mysql_real_escape_string($entry)."' WHERE id = $id;";
 		$result = mysql_query($sql);
 		
 		if (!$result) 
@@ -153,7 +117,7 @@
 			$comment = str_replace("\\", "\\\\", $comment);
 			$quotes = array(";", '"', "'");
 			$escquotes = array("\;", "\"", "\'");
-			$comment = trim(html_entity_decode($comment));
+			$comment = trim($comment);
 			$comment = str_replace($quotes, $escquotes, $comment);
 		
 			$entry_fix = nl2br2($comment);
@@ -163,7 +127,7 @@
 			dbConnect();
 			
 			$sql = "INSERT INTO `bean_comments` (entryid, id, poster, email, comment) 
-			VALUES ($entryid, $id, '$poster', '$email', '$comment');";
+			VALUES ($entryid, $id, '$poster', '$email', '".mysql_real_escape_string($comment)."');";
 			$result = mysql_query($sql);
 			
 		if (!$result) 
@@ -175,59 +139,6 @@
 			echo 'Success: the comment has been added.';
 		}		
 
-	}
-	
-	// format all of the code 
-	function formatCode($string)
-	{
-		return preg_replace_callback('/<code lang="(.*?)">(.*?)\<\/code>/is', 'getRendered', $string);
-		
-	}
-	
-	// helper function for the above
-	function getRendered($matches)
-	{
-		$type = strtolower($matches[1]);
-		
-		switch($type){
-			case 'basic':	$lang_id = 1;
-							break;
-			case 'java':	$lang_id = 2;
-							break;
-			case 'html':	$lang_id = 3;
-							break;
-			case 'php':		$lang_id = 4;
-							break;
-			default:		$lang_id = 0;
-							break;
-		}
-
-		return '<code>'. RenderToString($matches[2], $lang_id) . '</code>';
-	}
-	
-	// replace all newlines to br
-	function nl2br2($string) 
-	{
-		$pos = strrpos($string, "</code>");
-		
-		if($pos === FALSE){
-			$pos = 0;
-		}
-		
-		$replaced = str_replace(array("\r\n", "\r", "\n"), "<br />", substr($string,$pos));
-		return preg_replace_callback('/(.*?)(?:<code [^>]*>.*?\<\/code>)/is', 'convertBr', substr($string,0,$pos)) . $replaced;
-	}
-
-	function convertBr($matches)
-	{
-		print_r($matches);
-		return str_replace(array("\r\n", "\r", "\n"), "<br />", $matches[1]);	
-	}
-	
-	// replace all br with newlines
-	function br2nl2($string)
-	{
-		return str_replace(array("<br>","<br/>", "<br />"), "\r\n", $string);
 	}
 	
 ?>

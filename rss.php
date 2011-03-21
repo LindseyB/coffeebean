@@ -1,5 +1,4 @@
 <?php
-	//header("Content-Type: application/xml; charset=ISO-8859-1");
 	include_once 'common.php';
 	include_once 'db.php';
 
@@ -19,9 +18,9 @@
 		<link type="application/atom+xml" rel="self" href="http://rarlindseysmash.com/rss.xml"/>
 
 		<channel>
-  		<title>Caffeine Powered Automaton</title>
+  		<title>Lindsey Bieda</title>
   		<link>http://rarlindseysmash.com</link>
-  		<description>Caffeine Powered Automation News Feed</description>');
+  		<description>Lindsey Bieda News Feed</description>');
 	
 		$sql = "SELECT `id` FROM `bean_entries` ORDER BY `bean_entries`.`id` DESC";
 		$qry = mysql_query($sql);
@@ -72,15 +71,12 @@
 			$sqle = "SELECT `entry` FROM `bean_entries` WHERE `id` = " . $id;
 			$qrye = mysql_query($sqle);
 			$entry = mysql_fetch_array($qrye);
-			
+			$quotes = array(";", '"', "'");
+			$escquotes = array("\;", "\"", "\'");
+		
 			$entry = htmlentities($entry[0]);
 			$entry = str_replace('&nbsp;', '', $entry);  
-			//$entry = strip_tags($entry[0]);
-
-			/*if(strlen($entry) >= 300)
-			{
-				$entry = substr($entry, 0, 300) . "...";
-			}*/
+			$entry = str_replace($escquotes, $quotes, $entry);		
 
 			return $entry;
 	}

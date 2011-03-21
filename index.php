@@ -13,9 +13,7 @@
 
 <body>
 
-<div class="roundedcornr_box">
-   <div class="roundedcornr_top"><div></div></div>
-	  <div class="roundedcornr_content">
+<div class="content">
 	  	<p>
 	  		<a href="index.php" class="header"><h1>CoffeeBean</h1></a>
 <?php
@@ -110,8 +108,6 @@
 
 ?>
 		</p>
-	  </div>
-   <div class="roundedcornr_bottom"><div></div></div>
 </div>
 </body>
 </html>

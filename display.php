@@ -71,18 +71,18 @@
 			$prev = $p-1;
 			$next = $p+1;
    
-			echo '	<div class="paginate">';
-			
-			if($p < $max)
-			{
-					echo '<a href="index.php?p=' . $next . '">Next »</a>';	
-			}
+			echo '	<div class="pagination">';
 			if($p > 1)
 			{ 
 				echo '<a href="index.php?p=' . $prev . '">« Prev</a>';
 			}
-
-			echo '</div><br style="clear: right;"/>';
+			
+			if($p < $max)
+			{
+					echo ' <a href="index.php?p=' . $next . '">Next »</a>';	
+			}
+			
+			echo '</div>';
 		}
    
 	}
@@ -94,38 +94,21 @@
 		$month = date("m", $id);
 		$year = date("y", $id);
 	
-		echo '
-				<h1>' . gettitle($id) . '</h1>
-				<h2>' . $month . '.' . $day . '.' . $year . '</h2>
-				<div class="entry">' . getentry($id) . '</div>
-				<div class="entryfoot">';
-				
-				if(isset($_GET['n']) && !isset($_GET['comments']))
-				{
-					echo '<img src="images/cpa_link.png" alt="link"/>';
-				}
-				else
-				{
-					echo '<a href="index.php?n='.$id.'"><img src="images/cpa_link.png" alt="link"/></a> '; 
-				}
-				
-				if(isset($_GET['comments']))
-				{
-					echo 'comments (' . getCommentNum($id) . ')';
-				}
-				else
-				{
-					echo '<a href="index.php?n='.$id.'&amp;comments=1">comments ('. getCommentNum($id) .')</a>';
-				}
-				
-				echo '</div>
-				';
+		echo '	<div class="entry-container">
+					<div class="entry-sidebar">' . $month . '.' . $day . '.' . $year . '<br/>
+					<a href="index.php?n='.$id.'&amp;comments=1">comments ('. getCommentNum($id) .')</a>
+					</div>
+					<div class="entry">
+						<h1>' . gettitle($id) . '</h1>
+						' . getentry($id) . '<div class="divider"></div>
+					</div>
+				</div>';
 		
 	}
 	
 	function gettitle($id)
 	{
-			$sqlt = "SELECT `title` FROM `bean_entries` WHERE `id` = " . $id;
+			$sqlt = "SELECT `title` FROM `bean_entries` WHERE `id` = " . mysql_real_escape_string($id);
 			$qryt = mysql_query($sqlt);
 			$title = mysql_fetch_array($qryt);
 			
@@ -134,17 +117,17 @@
 	
 	function getentry($id)
 	{
-			$sqle = "SELECT `entry` FROM `bean_entries` WHERE `id` = " . $id;
+			$sqle = "SELECT `entry` FROM `bean_entries` WHERE `id` = " . mysql_real_escape_string($id);
 			$qrye = mysql_query($sqle);
 			$entry = mysql_fetch_array($qrye);
 
-			return $entry[0];
+			return nl2br2(stripslashes($entry[0]));
 	}
 	
 	function getCommentNum($id)
 	{
 	
-		$sql = "SELECT `id` FROM `bean_comments` WHERE `entryid` = " . $id;
+		$sql = "SELECT `id` FROM `bean_comments` WHERE `entryid` = " . mysql_real_escape_string($id);
 		$qry = mysql_query($sql);
 		$i = 0;
 
@@ -163,5 +146,10 @@
 		}
 
 			return count($carr);
+	}
+	
+	function nl2br2($string)
+	{ 
+		return str_replace(array("\r\n", "\r", "\n"), "<br />", $string);
 	}
 ?>
