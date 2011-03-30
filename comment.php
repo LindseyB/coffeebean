@@ -99,11 +99,12 @@
 		if(isset($error_flag))
 		{
 		?>
-		
-		 <form action="<?php echo $PHP_SELF; ?>" method="post" class="commentform">
-		 name : <input type="text" name="name" value="<?php echo $poster; ?>" size="30"/><br/>
- 		 email : <input type="text" name="email" value="<?php echo $_POST['email']; ?>" size="30"/><br/>
-		 <textarea name="comment" rows="8" cols="65"><?php echo $comment; ?></textarea><br/>
+
+		<form action="<?php echo $PHP_SELF; ?>" method="post" class="comment-form">
+			<label for="name">name: </label> <input type="text" name="name" value="<?php echo $poster; ?>" size="30"/><br/>
+			<label for="email">email: </label> <input type="text" name="email" value="<?php echo $_POST['email']; ?>" size="30"/><br/>
+			<textarea name="comment" rows="8" cols="65"><?php echo $comment; ?></textarea><br/>
+
 
 		 <?php
                 	//display captcha
@@ -112,9 +113,8 @@
                 	$publickey = "6Lex-QAAAAAAANQEeCijYeXWmZwKhgIAqWu8q_2M";
                 	echo recaptcha_get_html($publickey);
  		?>
-  		<input type="submit" value="Submit" name="submit"/>
-  		<input type="reset" value="Reset" />
-		 </form>
+			<input type="submit" value="Submit" name="submit"/> <input type="reset" value="Reset" />
+		</form>
 
 		
 		<?php	
@@ -124,10 +124,10 @@
  		//show new comment form
  ?>
  
- <form action="<?php echo $PHP_SELF; ?>" method="post" class="commentform">
- name : <input type="text" name="name" value="" size="30"/><br/>
- email : <input type="text" name="email" value="" size="30"/><br/>
- <textarea name="comment" rows="8" cols="65"></textarea><br/>
+<form action="<?php echo $PHP_SELF; ?>" method="post" class="comment-form">
+	<label for="name">name: </label> <input type="text" name="name" value="" size="30"/><br/>
+	<label for="email">email: </label> <input type="text" name="email" value="" size="30"/><br/>
+	<textarea name="comment" rows="8" cols="65"></textarea><br/>
  <?php 
  		//display captcha
  		
@@ -135,9 +135,8 @@
 		$publickey = "6LeFMgIAAAAAACoyptybiG4EJO-AvhUu2dzbZsOo"; 
 		echo recaptcha_get_html($publickey);
  ?>
-  <input type="submit" value="Submit" name="submit"/>
-  <input type="reset" value="Reset" />
- </form>
+	<input type="submit" value="Submit" name="submit"/> <input type="reset" value="Reset" />
+</form>
 
 <?php
 		}
@@ -148,11 +147,11 @@
 		if(getName($id) == 'Lindsey')
 		{
 			// admin comment
-			echo '<div class="admincommentbox"><span class="adminname">' . getName($id) . '</span><br/><br />' . getComment($id) . '</div>';
+			echo '<div class="comment admin-comment"><b>' . getName($id) . '</b><br />' . getComment($id) . '</div>';
 		}
 		else
 		{
-			echo '<div class="commentbox"><span class="name">' . getName($id) . '</span><br/><br />' . getComment($id) . '</div>'; 
+			echo '<div class="comment"><b>' . getName($id) . '</b><br/>' . getComment($id) . '</div>'; 
 		}
 	}
 	

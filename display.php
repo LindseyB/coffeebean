@@ -70,19 +70,19 @@
    
 			$prev = $p-1;
 			$next = $p+1;
-   
-			echo '	<div class="pagination">';
+   			
+			echo '<nav>';
 			if($p > 1)
 			{ 
-				echo '<a href="index.php?p=' . $prev . '">« Prev</a>';
+				echo '<a href="index.php?p=' . $prev . '">&laquo;</a>';
 			}
 			
 			if($p < $max)
 			{
-					echo ' <a href="index.php?p=' . $next . '">Next »</a>';	
+					echo ' <a href="index.php?p=' . $next . '">&raquo;</a>';	
 			}
 			
-			echo '</div>';
+			echo '</nav>';
 		}
    
 	}
@@ -91,19 +91,17 @@
 	function displayentry($id)
 	{
 		$day = date("d", $id);
-		$month = date("m", $id);
+		$month = date("M", $id);
 		$year = date("y", $id);
-	
-		echo '	<div class="entry-container">
-					<div class="entry-sidebar">' . $month . '.' . $day . '.' . $year . '<br/>
-					<a href="index.php?n='.$id.'&amp;comments=1">comments ('. getCommentNum($id) .')</a>
-					</div>
-					<div class="entry">
-						<h1>' . gettitle($id) . '</h1>
-						' . getentry($id) . '<div class="divider"></div>
-					</div>
-				</div>';
 		
+		echo '
+		<div class="comment-box"><a href="/index.php?n='.$id.'&amp;comments=1">'. getCommentNum($id).'</a></div>
+		<div class="entry">
+			<h2>' . gettitle($id) . '</h2>
+			' . getentry($id) . '
+			<div class="date"><a href="/index.php?n='.$id.'">'. $month . $day ', ' . $year . '</a></div>
+		</div>
+		';		
 	}
 	
 	function gettitle($id)
